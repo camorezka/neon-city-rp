@@ -1,0 +1,32 @@
+# Blender 4.5.2 LTS MTL File: 'urban_pack_03.blend'
+# www.blender.org
+
+newmtl metal_rough
+Ns 159.999985
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+
+newmtl pedestrian_traffic_light
+Ns 0.000000
+Ka 0.020000 0.020000 0.020000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 3
+map_Kd C:/Users/J. Sena/Documents/Coding Creature/Packs/Urban/textures/city_elements_atlas_a.png
+map_Ke C:/Users/J. Sena/Documents/Coding Creature/Packs/Urban/textures/city_elements_atlas_a.png
+
+newmtl regular_material
+Ns 90.000000
+Ka 0.020000 0.020000 0.020000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
