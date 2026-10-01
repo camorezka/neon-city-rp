@@ -202,12 +202,22 @@ function setupCharacter(gltf){
  const fallback=Object.values(actions)[0];
  if(!actions.Idle&&fallback)actions.Idle=fallback;
  if(!actions.Walk)actions.Walk=actions.Idle;if(!actions.Run)actions.Run=actions.Walk;
- if(actions.Idle)playAnim('Idle',.05);
+ if(actions.Idle)playAnim('Idle',.05);poseStaticCharacter();
  toast('Персонаж загружен');
 }
 function playAnim(n,fade=.14){
  const a=actions[n];if(!a||activeAction===a)return;
  const old=activeAction;a.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).fadeIn(fade).play();if(old)old.fadeOut(fade);activeAction=a;activeName=n;
+}
+function poseStaticCharacter(){
+ if(!playerModel)return;
+ const bones=[];playerModel.traverse(o=>{if(o.isBone)bones.push(o)});
+ for(const b of bones){const n=b.name.toLowerCase();
+  if(/left.*(upper)?arm|leftarm|mixamorigleftarm/.test(n))b.rotation.z-=.34;
+  if(/right.*(upper)?arm|rightarm|mixamorigrightarm/.test(n))b.rotation.z+=.34;
+  if(/left.*forearm|leftforearm|mixamorigleftforearm/.test(n))b.rotation.z-=.16;
+  if(/right.*forearm|rightforearm|mixamorigrightforearm/.test(n))b.rotation.z+=.16;
+ }
 }
 function animateCharacterProcedural(t,moving,running){
  if(!playerModel)return;
@@ -308,6 +318,7 @@ function updateCamera(dt){
  camera.position.lerp(desired,1-Math.exp(-9*dt));camera.lookAt(target);
 }
 function updateCar(dt){
+ if(!inCar||!carRoot)return;
  let throttle=(keys.KeyW?1:0)+(keys.KeyS?-.65:0);
  carSpeed+=throttle*30*dt;if(!throttle)carSpeed*=Math.exp(-2.8*dt);
  carSpeed=THREE.MathUtils.clamp(carSpeed,-8,23);
@@ -324,7 +335,7 @@ function updateCar(dt){
 }
 function updateWorld(dt){
  gameTime=(gameTime+dt*1.8)%1440;const h=Math.floor(gameTime/60),m=Math.floor(gameTime%60);$('clock').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
- const day=Math.max(0,Math.sin((gameTime-360)/720*Math.PI));sun?.set(1,Math.max(.1,day),.35);
+ const day=Math.max(0,Math.sin((gameTime-360)/720*Math.PI));if(sun){sun.set(1,Math.max(.08,day),.35);sky.material.uniforms.sunPosition.value.copy(sun)}
  updateNPCs(dt);mapDraw();
  const t=nearestInteract();$('prompt').style.display=t?'block':'none';if(t)$('promptText').textContent=t.text;
 }
